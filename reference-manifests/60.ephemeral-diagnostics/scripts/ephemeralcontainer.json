@@ -1,0 +1,43 @@
+{
+  "kind": "Pod",
+  "apiVersion": "v1",
+  "metadata": {
+    "name": "demo-memory-leak-7bdb959c58-8wqkm",
+    "namespace": "wrd2026-diagnostics"
+  },
+  "spec": {
+    "ephemeralContainers": [
+      {
+        "name": "diag-debug-live",
+        "image": "<your-registry>/demo-diagnostic-tooling:0.1.0",
+        "securityContext": {
+          "seccompProfile": {
+            "type": "RuntimeDefault"
+          }
+        },
+        "command": [
+          "sh",
+          "-c",
+          "sleep 365d"
+        ],
+        "stdin": true,
+        "tty": true,
+        "resources": {},
+        "terminationMessagePath": "/dev/termination-log",
+        "terminationMessagePolicy": "File",
+        "imagePullPolicy": "IfNotPresent",
+        "targetContainerName": "demo-memory-leak",
+        "volumeMounts": [
+          {
+            "name": "tmp-volume",
+            "mountPath": "/tmp"
+          },
+          {
+            "name": "artifacts-volume",
+            "mountPath": "/diagnosticArtifacts"
+          }
+        ]
+      }
+    ]
+  }
+}

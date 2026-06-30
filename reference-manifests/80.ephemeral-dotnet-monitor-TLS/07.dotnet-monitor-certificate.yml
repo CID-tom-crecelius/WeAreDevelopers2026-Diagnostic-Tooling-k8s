@@ -1,0 +1,45 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: dotnet-monitor-certificate
+  namespace: wrd2026-diagnostics
+spec:
+  secretName: dotnet-monitor-tls
+  issuerRef:
+    name: <your-certificate-issuer>
+    kind: ClusterIssuer
+
+  # Ensure the Secret also includes ca.crt so it can be used as caSecretName too.
+  secretTemplate:
+    annotations:
+      cert-manager.io/allow-direct-injection: "true"
+
+  privateKey:
+    algorithm: RSA
+    size: 2048
+    rotationPolicy: Always
+
+  duration: 2160h
+  renewBefore: 360h
+
+  isCA: false
+  usages:
+    - client auth
+    - server auth
+    - digital signature
+    - key encipherment
+  
+  subject:
+    organizations:
+      - cert-manager
+  
+  dnsNames:
+    - dotnet-monitor-api.wrd2026-diagnostics.svc.cluster.local
+  
+  keystores:
+    pkcs12:
+      create: true
+      profile: Modern2023 #LegacyDES
+      passwordSecretRef:
+        name: dotnet-monitor-secrets
+        key: Kestrel__Certificates__Default__Password

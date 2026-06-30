@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-memory-leak
+  namespace: wrd2026-diagnostics
+  labels:
+    app: demo-memory-leak
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-memory-leak
+  template:
+    metadata:
+      labels:
+        app: demo-memory-leak
+    spec:
+      imagePullSecrets:
+        - name: <registry-secrets>
+
+      # Pod-level security defaults
+      securityContext:
+        fsGroup: 2000
+        runAsNonRoot: true
+        runAsUser: 1654
+        runAsGroup: 1654
+
+      containers:
+        - name: demo-memory-leak
+          image: <your-registy.net>/demo-memory-leak:0.1.0
+          imagePullPolicy: IfNotPresent
+
+          securityContext:
+            seccompProfile:
+              type: RuntimeDefault
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop:
+                - ALL
+
+          ports:
+            - containerPort: 8080
+          env:
+            - name: ASPNETCORE_URLS
+              value: http://0.0.0.0:8080
+            - name: DOTNET_DiagnosticPorts
+              value: "/diagnosticArtifacts/dotnet-mymonitor.sock,nosuspend"
+          volumeMounts:
+            - name: artifacts-volume
+              mountPath: /diagnosticArtifacts
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "1Gi"
+
+
+      volumes:
+        - name: artifacts-volume
+          emptyDir: {}
+        - name: dotnet-monitor-certificate-volume
+          secret:
+            secretName: dotnet-monitor-tls
+        - name: dotnet-monitor-volume
+          projected:
+            sources:
+              - secret:
+                  name: dotnet-monitor-secrets
+              - configMap:
+                  name: dotnet-monitor-settings
+        - name: egress-volume
+          emptyDir: {}

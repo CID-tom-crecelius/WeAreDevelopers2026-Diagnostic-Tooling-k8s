@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-memory-leak
+  namespace: wrd2026-diagnostics
+  labels:
+    app: demo-memory-leak
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-memory-leak
+  template:
+    metadata:
+      labels:
+        app: demo-memory-leak
+    spec:
+      imagePullSecrets:
+        - name: <registry-secrets>
+
+      containers:
+        - name: demo-memory-leak
+          image: <your-registy.net>/demo-memory-leak:0.1.0
+          imagePullPolicy: IfNotPresent
+
+          ports:
+            - containerPort: 8080
+          env:
+            - name: ASPNETCORE_URLS
+              value: http://0.0.0.0:8080
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "1Gi"

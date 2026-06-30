@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dotnet-monitor-settings
+  namespace: wrd2026-diagnostics
+data:
+  settings.json: |
+    {
+      "$schema": "https://aka.ms/dotnet-monitor-schema",
+      "Egress": {
+        "FileSystem": {
+          "monitorFile": {
+            "directoryPath": "/diagnosticsEgressArtifacts/ready",
+            "intermediateDirectoryPath": "/diagnosticsEgressArtifacts/tmp"
+          }
+        },
+        "S3Storage": {
+          "monitorS3Blob": {
+            "endpoint": "http://localhost:9000",
+            "bucketName": "myS3Bucket",
+            "accessKeyId": "minioUser",
+            "secretAccessKey": "mySecretPassword",
+            "regionName": "us-east-1",
+            "copyBufferSize": 1024
+          }
+        }
+      }
+    }
