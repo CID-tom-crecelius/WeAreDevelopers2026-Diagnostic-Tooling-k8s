@@ -1,6 +1,6 @@
 #!/bin/bash
 
-NAMESPACE=wrd2026-diagnostics
+NAMESPACE=wad2026-diagnostics
 
 POD=$(
   kubectl -n ${NAMESPACE} get pods \

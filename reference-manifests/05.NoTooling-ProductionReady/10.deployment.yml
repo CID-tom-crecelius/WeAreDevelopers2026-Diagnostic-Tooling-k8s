@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: demo-memory-leak
-  namespace: wrd2026-diagnostics
+  namespace: wad2026-diagnostics
   labels:
     app: demo-memory-leak
 spec:

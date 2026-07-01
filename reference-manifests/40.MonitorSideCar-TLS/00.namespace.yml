@@ -1,4 +1,4 @@
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: wrd2026-diagnostics
+  name: wad2026-diagnostics

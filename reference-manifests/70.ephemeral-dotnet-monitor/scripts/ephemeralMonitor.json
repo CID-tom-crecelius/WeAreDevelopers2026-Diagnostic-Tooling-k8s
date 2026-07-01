@@ -3,7 +3,7 @@
   "kind": "Pod",
   "metadata": {
     "name": "ephemeral-dotnet-monitor",
-    "namespace": "wrd2026-diagnostics"
+    "namespace": "wad2026-diagnostics"
   },
   "spec": {
     "ephemeralContainers": [

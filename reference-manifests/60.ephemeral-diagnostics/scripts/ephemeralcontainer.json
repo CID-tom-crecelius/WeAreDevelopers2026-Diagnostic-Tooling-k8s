@@ -3,7 +3,7 @@
   "apiVersion": "v1",
   "metadata": {
     "name": "demo-memory-leak-7bdb959c58-8wqkm",
-    "namespace": "wrd2026-diagnostics"
+    "namespace": "wad2026-diagnostics"
   },
   "spec": {
     "ephemeralContainers": [

@@ -2,7 +2,7 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: dotnet-monitor-certificate
-  namespace: wrd2026-diagnostics
+  namespace: wad2026-diagnostics
 spec:
   secretName: dotnet-monitor-tls
   issuerRef:
@@ -34,7 +34,7 @@ spec:
       - cert-manager
   
   dnsNames:
-    - dotnet-monitor-api.wrd2026-diagnostics.svc.cluster.local
+    - dotnet-monitor-api.wad2026-diagnostics.svc.cluster.local
   
   keystores:
     pkcs12:
